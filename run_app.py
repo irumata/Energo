@@ -48,6 +48,9 @@ hide_streamlit_style = """
 pogoda = load_pickle("pogoda.pkl")
 pogoda["lng"] = pogoda.lon
 
+tcol1, _, tcol2 = st.beta_columns([10,1,10])
+
+st.header("Анализ")
 def_date= pd.to_datetime('2020-07-01 00:00:00')
 hcol1, hcol2 = st.beta_columns([1,1])
 with hcol1:
@@ -74,6 +77,9 @@ DATA_URL = "https://raw.githubusercontent.com/ajduberstein/geo_datasets/master/h
     
 # you can select which traitlets keys it observes
 import streamlit.components.v1 as components
+
+
+
 
 # >>> import plotly.express as px
 # >>> fig = px.box(range(10))
@@ -121,6 +127,7 @@ col1, _,col2 = st.beta_columns([15,1,15])
 #st.text(check_df.loc[oblast])
 
 
+
 avarii1 = load_pickle("avarii1.pkl")
 with col1:
     st.header("       Текущая ситуация                                   ")
@@ -162,7 +169,60 @@ with col2:
            # str((check_df["risk"+str(k)]*100).astype(int))
             check_df["text"]+="% \n "
             check_df.loc[check_df["risk"+str(k)]<treshold,"text"]=old_text.loc[check_df["risk"+str(k)]<treshold]
-#st.write(df)
+
+with tcol1:
+    st.markdown('<p style="background-color:#FF0000;color:#00000;font-weight:bold;font-size:26px;font-family:"IBM Plex Sans", sans-serif;border-radius:2%;">Происходит сейчас</style> </p>',
+         unsafe_allow_html=True)
+    ex = st.beta_expander(label=check_df.index[8], expanded=False)
+    with ex:
+        
+        k=5
+        st.markdown('<p style="background-color:RGB({},{},{});color:#000000;font-weight:bold;font-size:14px;font-family:"IBM Plex Sans", sans-serif;border-radius:2%;"> {}</style> Источник: внутренний, телефон +79161234567 </p>'.format( color_dict[k][0]*255,color_dict[k][1]*255,color_dict[k][2]*255, ft_ids[k]),
+         unsafe_allow_html=True)
+        if st.button("Перейти",key=0):
+            oblast=check_df.index[8]
+        
+    ex = st.beta_expander(label=check_df.index[17], expanded=False)
+    with ex:
+        
+        k=3
+        st.markdown('<p style="background-color:RGB({},{},{});color:#000000;font-weight:bold;font-size:14px;font-family:"IBM Plex Sans", sans-serif;border-radius:2%;"> {}</style> Источник: внутренний, телефон +79161234567 </p>'.format( color_dict[k][0]*255,color_dict[k][1]*255,color_dict[k][2]*255, ft_ids[k]),
+         unsafe_allow_html=True)
+        if st.button("Перейти",key=1):
+            oblast=check_df.index[17]
+                
+with tcol2:
+    st.markdown('<p style="background-color:#FFDD00;color:#00000;font-weight:bold;font-size:26px;font-family:"IBM Plex Sans", sans-serif;border-radius:2%;">Прогноз на ближайшие 3 дня</style> </p>',
+         unsafe_allow_html=True)
+    ex = st.beta_expander(label=check_df.index[16], expanded=False)
+    with ex:
+        
+        k=2
+        st.markdown('<p style="background-color:RGB({},{},{});color:#000000;font-weight:bold;font-size:14px;font-family:"IBM Plex Sans", sans-serif;border-radius:2%;"> {}</style> Источник: внутренний, телефон +79161234567 </p>'.format( color_dict[k][0]*255,color_dict[k][1]*255,color_dict[k][2]*255, ft_ids[k]),
+         unsafe_allow_html=True)
+        if st.button("Перейти",key=2):
+            oblast=check_df.index[16]
+        
+    ex = st.beta_expander(label=check_df.index[2], expanded=False)
+    with ex:
+        
+        k=4
+        st.markdown('<p style="background-color:RGB({},{},{});color:#000000;font-weight:bold;font-size:14px;font-family:"IBM Plex Sans", sans-serif;border-radius:2%;"> {}</style> Источник: внутренний, телефон +79161234567 </p>'.format( color_dict[k][0]*255,color_dict[k][1]*255,color_dict[k][2]*255, ft_ids[k]),
+         unsafe_allow_html=True)
+        if st.button("Перейти",key=3):
+            oblast=check_df.index[2]
+                
+
+            
+#with tcol2:
+   # k = 7
+    #st.markdown('''div.stButton > button:first-child {background-color: red;color:green;font-size:20px;height:3em;width:30em;border-radius:10px 10px 10px 10px;}''', unsafe_allow_html=True)
+    
+    #if st.button(oblast_list[3]):
+    #    oblast_to_view = oblast_list[5]
+        #st.write(“content you want to show”)
+            
+            #st.write(df)
 layers=[]
 for i,risk in enumerate(risks):
     df["tmp_view"+str(i)] = df["risk"+str(features_dict[risk])]*150000 + 1000
@@ -235,3 +295,8 @@ with cont_col2:
 
         st.markdown('<p style="background-color:RGB({},{},{});color:#000000;font-weight:bold;font-size:14px;font-family:"IBM Plex Sans", sans-serif;border-radius:2%;">{}</style> вероятность {}% </p>'.format( color_dict[k][0]*255,color_dict[k][1]*255,color_dict[k][2]*255, ft_ids[k],
         int(check_df.loc[oblast]["risk"+str(k)]*100)), unsafe_allow_html=True)
+        
+        
+        
+
+
